@@ -1,1 +1,17 @@
+select * from users;
+select * from Restaurants;
+select * from Orders;
+select * from Drivers;
+select * from Payment;
+select * from Rating;
+select * from Address;
+select * from Menu;
 
+Desc users;
+Desc Restaurants;
+Desc Orders;
+Desc Drivers;
+Desc Payment;
+Desc Rating;
+Desc Address;
+Desc Menu;
