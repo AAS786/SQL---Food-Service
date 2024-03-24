@@ -35,3 +35,39 @@ SELECT Address.street, Address.city, Address.state, Address.pincode
 FROM Address
 JOIN Orders ON Address.user_id = Orders.user_id
 WHERE Orders.order_id = 4;
+
+
+# multiple join and groupby & Having clause
+# 1. To select the average rating for each restaurant, along with the number of ratings they have received:
+SELECT Restaurants.name, AVG(Rating.rating) as avg_rating, COUNT(Rating.rating) as rating_count
+FROM Restaurants
+JOIN Rating ON Restaurants.restaurant_id = Rating.restaurant_id
+GROUP BY Restaurants.name;
+
+# Groupby clause
+# Get the total number of orders per restaurant with order total greater than 50:
+SELECT restaurant_id, COUNT(*) AS total_orders
+FROM Orders
+GROUP BY restaurant_id
+HAVING SUM(order_total) > 100;
+
+# Where Clause
+# Get orders with delivery status 'Delivered' and placed by user with ID 5:
+SELECT * FROM Orders
+WHERE delivery_status = 'Complete' AND user_id = 5;
+
+# Get drivers located in 'Vartak Nagar':
+SELECT * FROM Drivers
+WHERE location = 'Vartak Nagar, Thane';
+
+# Entries with GROUP BY Clause:
+
+# Get the average rating for each restaurant:
+SELECT restaurant_id, AVG(rating) AS average_rating
+FROM Rating
+GROUP BY restaurant_id;
+
+# Get the count of orders for each payment status:
+SELECT status, COUNT(*) AS order_count
+FROM Payment
+GROUP BY status;
