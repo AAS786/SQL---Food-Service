@@ -1,1 +1,37 @@
+# 1.To select the name and email of all users who have placed an order:
+SELECT Users.name, Users.email
+FROM Users
+JOIN Orders ON Users.user_id = Orders.user_id;
 
+
+# 2.To select the name and address of all restaurants that have received a rating of 4 or higher:
+SELECT Restaurants.name, Restaurants.address
+FROM Restaurants
+JOIN Rating ON Restaurants.restaurant_id = Rating.restaurant_id
+WHERE Rating.rating >= 4;
+
+# 3.To select the order id, total, and status of all orders that have been placed by a user with the email ‘rahul@example.com’:
+SELECT Order_id, Order_total, delivery_status
+FROM Orders
+JOIN Users ON Orders.user_id = Users.user_id
+WHERE Users.email = 'rahul@example.com';
+
+
+# 4.To select the name, phone, and rating of all drivers who have delivered an order:
+SELECT Drivers.email, Drivers.phone, Rating.rating
+FROM Drivers
+JOIN Orders ON Drivers.driver_id = Orders.driver_id
+JOIN Rating ON Orders.order_id = Rating.rating_id;
+
+# 5.To select the name, price and status of the payment of all menu items on a particular restaurant:
+SELECT Menu.item_name, Menu.price, Payment.status
+FROM Menu
+JOIN Orders ON Menu.restaurant_id = Orders.restaurant_id
+JOIN Payment ON Orders.order_id = Payment.order_id
+WHERE Menu.restaurant_id = 1;
+
+# 6.To select all the addresses of the user who placed a particular order:
+SELECT Address.street, Address.city, Address.state, Address.pincode
+FROM Address
+JOIN Orders ON Address.user_id = Orders.user_id
+WHERE Orders.order_id = 4;
