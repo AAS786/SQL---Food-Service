@@ -1,1 +1,67 @@
+# Like Operator:
+# Get users whose email contains 'gmail':
+SELECT * FROM Users WHERE email LIKE '%example%'
+limit 5;        
 
+# Having Clause:
+# Get the total order amount for each user who has placed orders more than 200:
+SELECT user_id, SUM(order_total) AS total_amount
+FROM Orders
+GROUP BY user_id
+HAVING total_amount > 200;
+
+# Group By Clause:
+# Get the count of orders for each restaurant:
+SELECT restaurant_id, COUNT(*) AS order_count
+FROM Orders
+GROUP BY restaurant_id;
+
+# Where Clause:
+# Get the details of the driver with the name 'Rohit Sharma':
+SELECT * FROM Drivers WHERE name = 'Rohit Sharma';
+
+# Arithmetic Operators:
+# Get the total price of all menu items for a restaurant with ID 1:
+SELECT SUM(price) AS total_price FROM Menu WHERE restaurant_id = 1;
+
+# Comparison Operators:
+# Get users who have placed orders with a total greater than $50:
+SELECT DISTINCT user_id FROM Orders WHERE order_total > 50;
+
+# Logical Operators:
+# Get orders with a delivery status of 'Cancel' or 'on the way':
+SELECT * FROM Orders WHERE delivery_status = 'cancel' OR delivery_status = 'on the way';
+
+# Null Value:
+# Get users who do not have an associated address:
+SELECT * FROM Users WHERE user_id IN (SELECT DISTINCT user_id FROM Address)
+limit 5;
+
+# Limit Command:
+# Get the first 10 orders:
+SELECT * FROM Orders LIMIT 10;
+
+# Single Row Subqueries:
+# Get the email of the user who placed the highest order:
+SELECT email FROM Users WHERE user_id = (SELECT user_id FROM Orders ORDER BY order_total DESC LIMIT 1);
+
+# Multiple Row Subqueries:
+# Get users who have placed orders at restaurants in 'Thane':
+SELECT DISTINCT user_id FROM Orders WHERE restaurant_id IN (SELECT restaurant_id 
+FROM Restaurants WHERE address = '123, ABC Road, Thane');
+
+# Subquery with IN:
+# Get the names of restaurants where the average order total is greater than $50:
+SELECT name FROM Restaurants WHERE restaurant_id IN (SELECT restaurant_id 
+FROM Orders GROUP BY restaurant_id HAVING AVG(order_total) > 50);
+
+# Subquery with ALL:
+# Get users who have placed orders with a total greater than all orders placed by user with ID 1:
+SELECT DISTINCT user_id FROM Orders WHERE order_total > ALL (SELECT order_total 
+FROM Orders WHERE user_id = 1);
+
+# like Operator
+SELECT * FROM Users WHERE name LIKE 'A%';
+SELECT * FROM Users WHERE name LIKE '%A';
+SELECT * FROM Users WHERE name LIKE '_R%';
+SELECT * FROM Users WHERE name LIKE 'R_%';
