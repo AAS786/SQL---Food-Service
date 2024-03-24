@@ -1,1 +1,63 @@
+# Single Sub Query
+# Get the total number of orders for users who have placed more than 2 orders:
+SELECT COUNT(*) AS total_orders
+FROM Orders
+WHERE user_id IN (SELECT user_id
+FROM Orders
+GROUP BY user_id
+HAVING COUNT(*) > 2);
 
+# Get the names of users who have placed orders with a total greater than 150:
+SELECT name FROM Users
+WHERE user_id IN (
+    SELECT user_id
+    FROM Orders
+    WHERE order_total > 150
+);
+
+# Get the average rating of restaurants that have received ratings:
+SELECT AVG(rating) AS average_rating
+FROM Rating
+WHERE restaurant_id IN (
+    SELECT DISTINCT restaurant_id
+    FROM Rating);
+    
+# Get the names of users who have not placed any orders:
+SELECT name FROM Users
+WHERE user_id NOT IN (
+    SELECT DISTINCT user_id
+    FROM Orders
+);   
+
+# Double Subqueries:
+# Identify users who have ordered from restaurants that are serviced by drivers operating from 'Kolshet, Thane'.
+SELECT name FROM Users
+WHERE user_id IN (
+    SELECT user_id
+    FROM Orders
+    WHERE restaurant_id IN (
+        SELECT driver_id
+        FROM Drivers
+        WHERE location = 'Kolshet, Thane'));
+
+
+# Get the total number of orders placed at restaurants where the average rating is above 4:
+SELECT COUNT(*) AS total_orders
+FROM Orders
+WHERE restaurant_id IN (
+    SELECT restaurant_id
+    FROM Rating
+    GROUP BY restaurant_id
+    HAVING AVG(rating) > 4
+);
+
+
+# Get the names of users who have placed orders with a total greater than the average order total:
+SELECT name
+FROM Users
+WHERE user_id IN (
+    SELECT user_id
+    FROM Orders
+    WHERE order_total > (
+        SELECT AVG(order_total)
+        FROM Orders));
