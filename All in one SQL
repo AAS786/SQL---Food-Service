@@ -1,1 +1,520 @@
+Create database food_service;
+use food_service;
 
+CREATE TABLE Users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    UNIQUE (email)
+);
+
+CREATE TABLE Restaurants (
+    restaurant_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE Orders (
+    order_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    restaurant_id INT NOT NULL,
+    order_total DECIMAL(10,2) NOT NULL,
+    delivery_status VARCHAR(20) NOT NULL,
+    driver_id INT,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (restaurant_id) REFERENCES Restaurants(restaurant_id),
+    FOREIGN KEY (driver_id) REFERENCES Drivers(driver_id)
+);
+
+CREATE TABLE Drivers (
+    driver_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Payment (
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT NOT NULL,
+    payment_method VARCHAR(20) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id)
+);
+
+CREATE TABLE Rating (
+    rating_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    restaurant_id INT NOT NULL,
+    rating INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (restaurant_id) REFERENCES Restaurants(restaurant_id)
+);
+
+CREATE TABLE Address (
+    address_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    state VARCHAR(255) NOT NULL,
+    city  VARCHAR(255) NOT NULL,
+    street VARCHAR(255) NOT NULL,
+    pincode INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+CREATE TABLE Menu (
+    menu_id INT PRIMARY KEY AUTO_INCREMENT,
+    restaurant_id INT NOT NULL,
+    item_name VARCHAR(255) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (restaurant_id) REFERENCES Restaurants(restaurant_id));
+    
+select * from users;
+select * from Restaurants;
+select * from Orders;
+select * from Drivers;
+select * from Payment;
+select * from Rating;
+select * from Address;
+select * from Menu;
+
+Desc users;
+Desc Restaurants;
+Desc Orders;
+Desc Drivers;
+Desc Payment;
+Desc Rating;
+Desc Address;
+Desc Menu;
+
+-- Inserting sample data into Users table
+INSERT INTO Users (user_id, name, email, password, phone)
+VALUES 
+    (1, 'Rahul Sharma', 'rahul@example.com', 'password123', '+91 9876543210'),
+    (2, 'Priya Patel', 'priya@example.com', 'securepass', '+91 9876543211'),
+    (3, 'Amit Singh', 'amit@example.com', 'pass1234', '+91 9876543212'),
+    (4, 'Anjali Gupta', 'anjali@example.com', 'anjali123', '+91 9876543213'),
+    (5, 'Sandeep Kumar', 'sandeep@example.com', 'sandy456', '+91 9876543214'),
+    (6, 'Neha Jain', 'neha@example.com', 'neha789', '+91 9876543215'),
+    (7, 'Vikas Verma', 'vikas@example.com', 'vikaspass', '+91 9876543216'),
+    (8, 'Riya Sharma', 'riya@example.com', 'riya@123', '+91 9876543217'),
+    (9, 'Amitabh Mishra', 'amitabh@example.com', 'amitabh123', '+91 9876543218'),
+    (10, 'Pooja Shah', 'pooja@example.com', 'pooja@456', '+91 9876543219'),
+    (11, 'Karan Patel', 'karan@example.com', 'karan123', '+91 9876543220'),
+    (12, 'Smita Singh', 'smita@example.com', 'smita456', '+91 9876543221'),
+    (13, 'Ankit Gupta', 'ankit@example.com', 'ankitpass', '+91 9876543222'),
+    (14, 'Divya Kumar', 'divya@example.com', 'divya@123', '+91 9876543223'),
+    (15, 'Rahul Verma', 'rahulv@example.com', 'rahulv123', '+91 9876543224'),
+    (16, 'Shweta Jain', 'shweta@example.com', 'shweta456', '+91 9876543225'),
+    (17, 'Nikhil Patel', 'nikhil@example.com', 'nikhilpass', '+91 9876543226'),
+    (18, 'Neha Gupta', 'nehag@example.com', 'nehag@123', '+91 9876543227'),
+    (19, 'Aryan Singh', 'aryan@example.com', 'aryan123', '+91 9876543228'),
+    (20, 'Preeti Sharma', 'preeti@example.com', 'preeti456', '+91 9876543229'),
+    (21, 'Rohit Verma', 'rohit@example.com', 'rohitpass', '+91 9876543230'),
+    (22, 'Anjali Singh', 'anjalisingh@example.com', 'anjali123', '+91 9876543231'),
+    (23, 'Riya Gupta', 'riyag@example.com', 'riya@123', '+91 9876543232'),
+    (24, 'Kunal Patel', 'kunalp@example.com', 'kunal123', '+91 9876543233'),
+    (25, 'Sneha Singh', 'snehas@example.com', 'sneha@123', '+91 9876543234');
+
+
+-- Inserting sample data into Restaurants table
+INSERT INTO Restaurants (restaurant_id, name, address, phone)
+VALUES 
+    (1, 'Golden Spoon', '123, ABC Road, Thane', '+91 9876543001'),
+    (2, 'Spice Garden', '456, XYZ Street, Thane', '+91 9876543002'),
+    (3, 'Sizzling Bites', '789, PQR Avenue, Thane', '+91 9876543003'),
+    (4, 'Tasty Treats', '101, MNO Lane, Thane', '+91 9876543004'),
+    (5, 'Royal Dine', '321, LMN Lane, Thane', '+91 9876543005'),
+    (6, 'Flavoursome Delights', '543, RST Street, Thane', '+91 9876543006'),
+    (7, 'Yummy Junction', '876, EFG Road, Thane', '+91 9876543007'),
+    (8, 'Green Leaf', '234, GHI Avenue, Thane', '+91 9876543008');
+
+INSERT INTO Orders (order_id, user_id, restaurant_id, order_total, delivery_status, driver_id)
+VALUES 
+    (1, 1, 1, 120.00, 'complete', 1),
+    (2, 1, 2, 90.50, 'on the way', 2),
+    (3, 1, 3, 150.75, 'processing', NULL),
+    (4, 2, 4, 80.00, 'complete', 3),
+    (5, 2, 5, 100.25, 'cancel', NULL),
+    (6, 2, 6, 140.00, 'complete', 4),
+    (7, 3, 7, 160.50, 'on the way', 5),
+    (8, 3, 8, 105.75, 'processing', NULL),
+    (9, 3, 1, 90.00, 'complete', 1),
+    (10, 4, 2, 145.25, 'cancel', NULL),
+    (11, 4, 3, 127.00, 'complete', 2),
+    (12, 4, 4, 99.50, 'on the way', 3),
+    (13, 5, 5, 85.25, 'processing', NULL),
+    (14, 5, 6, 160.00, 'complete', 4),
+    (15, 5, 7, 122.50, 'cancel', NULL),
+    (16, 6, 8, 99.75, 'complete', 5),
+    (17, 6, 1, 105.00, 'on the way', 1),
+    (18, 6, 2, 152.25, 'processing', NULL),
+    (19, 7, 3, 110.00, 'complete', 2),
+    (20, 7, 4, 105.50, 'cancel', NULL),
+    (21, 7, 5, 92.25, 'complete', 3),
+    (22, 8, 6, 145.00, 'on the way', 4),
+    (23, 8, 7, 117.50, 'processing', NULL),
+    (24, 8, 8, 97.25, 'complete', 5),
+    (25, 9, 1, 100.00, 'cancel', NULL);
+
+    
+-- Inserting sample data into Drivers table
+INSERT INTO Drivers (Driver_id, name, phone, location, email)
+VALUES 
+    (1, 'Rahul Kumar', '+91 9876543201', 'Thane West', 'rahulk@example.com'),
+    (2, 'Priya Singh', '+91 9876543202', 'Kolshet, Thane', 'priyas@example.com'),
+    (3, 'Rohit Sharma', '+91 9876543203', 'Majiwada, Thane', 'rohits@example.com'),
+    (4, 'Neha Gupta', '+91 9876543204', 'Hiranandani Estate, Thane', 'nehag@example.com'),
+    (5, 'Ankit Patel', '+91 9876543205', 'Vartak Nagar, Thane', 'ankitp@example.com');
+    
+INSERT INTO Payment (payment_id, order_id, payment_method, amount, status)
+VALUES
+    (10001, 1, 'Gpay', 120.00, 'success'),
+    (10002, 2, 'card', 90.50, 'pending'),
+    (10003, 3, 'cash', 150.75, 'success'),
+    (10004, 4, 'Gpay', 80.00, 'success'),
+    (10005, 5, 'card', 100.25, 'pending'),
+    (10006, 6, 'cash', 140.00, 'success'),
+    (10007, 7, 'Gpay', 160.50, 'success'),
+    (10008, 8, 'card', 105.75, 'pending'),
+    (10009, 9, 'cash', 90.00, 'success'),
+    (10010, 10, 'Gpay', 145.25, 'success'),
+    (10011, 11, 'card', 127.00, 'pending'),
+    (10012, 12, 'cash', 99.50, 'success'),
+    (10013, 13, 'Gpay', 85.25, 'success'),
+    (10014, 14, 'card', 160.00, 'pending'),
+    (10015, 15, 'cash', 122.50, 'success'),
+    (10016, 16, 'Gpay', 99.75, 'success'),
+    (10017, 17, 'card', 105.00, 'pending'),
+    (10018, 18, 'cash', 152.25, 'success'),
+    (10019, 19, 'Gpay', 110.00, 'success'),
+    (10020, 20, 'card', 105.50, 'pending'),
+    (10021, 21, 'cash', 92.25, 'success'),
+    (10022, 22, 'Gpay', 145.00, 'success'),
+    (10023, 23, 'card', 117.50, 'pending'),
+    (10024, 24, 'cash', 97.25, 'success'),
+    (10025, 25, 'Gpay', 100.00, 'success');
+    
+-- Inserting sample data into Rating table
+INSERT INTO Rating (rating_id,user_id, restaurant_id, rating)
+VALUES
+    (1,1, 1, 4),
+    (2,2, 2, 5),
+    (3,3, 3, 3),
+    (4,4, 4, 4),
+    (5,5, 5, 2),
+    (6,6, 6, 5),
+    (7,7, 7, 4),
+    (8,8, 8, 3),
+    (9,9, 1, 5),
+    (10,10, 2, 4),
+    (11,11, 3, 3),
+    (12,12, 4, 2),
+    (13,13, 5, 4),
+    (14,14, 6, 5),
+    (15,15, 7, 3),
+    (16,16, 8, 4),
+    (17,17, 1, 5),
+    (18,18, 2, 4),
+    (19,19, 3, 2),
+    (20,20, 4, 3),
+    (21,21, 5, 4),
+    (22,22, 6, 3),
+    (23,23, 7, 5),
+    (24,24, 8, 4),
+    (25,25, 1, 3);
+    
+INSERT INTO Address (user_id, state, city, street, pincode) VALUES
+-- Bhandup
+(1, 'Maharashtra', 'Bhandup', 'Main Road', 400078),
+(2, 'Maharashtra', 'Bhandup', 'Station Road', 400078),
+(3, 'Maharashtra', 'Bhandup', 'Gandhi Nagar', 400078),
+(4, 'Maharashtra', 'Bhandup', 'Market Street', 400078),
+(5, 'Maharashtra', 'Bhandup', 'Park Avenue', 400078),
+-- Mulund
+(6, 'Maharashtra', 'Mulund', 'Hill Road', 400080),
+(7, 'Maharashtra', 'Mulund', 'Lake View', 400080),
+(8, 'Maharashtra', 'Mulund', 'Sunset Boulevard', 400080),
+(9, 'Maharashtra', 'Mulund', 'Garden Street', 400080),
+(10, 'Maharashtra', 'Mulund', 'Central Avenue', 400080),
+-- Thane
+(11, 'Maharashtra', 'Thane', 'City Road', 400601),
+(12, 'Maharashtra', 'Thane', 'Victory Street', 400601),
+(13, 'Maharashtra', 'Thane', 'Heritage Lane', 400601),
+(14, 'Maharashtra', 'Thane', 'Mall Street', 400601),
+(15, 'Maharashtra', 'Thane', 'Riverfront Drive', 400601),
+-- Nahur
+(16, 'Maharashtra', 'Nahur', 'Forest Avenue', 400080),
+(17, 'Maharashtra', 'Nahur', 'Woodland Drive', 400080),
+(18, 'Maharashtra', 'Nahur', 'Mountain View', 400080),
+(19, 'Maharashtra', 'Nahur', 'Sunny Side', 400080),
+(20, 'Maharashtra', 'Nahur', 'Maple Street', 400080),
+-- Additional rows for each city
+-- Bhandup
+(21, 'Maharashtra', 'Bhandup', 'River Road', 400078),
+(22, 'Maharashtra', 'Bhandup', 'Green Avenue', 400078),
+(23, 'Maharashtra', 'Bhandup', 'Orchard Street', 400078),
+(24, 'Maharashtra', 'Bhandup', 'Ocean Drive', 400078),
+(25, 'Maharashtra', 'Bhandup', 'Pineapple Lane', 400078);
+
+
+-- Inserting additional sample data into Menu table
+INSERT INTO Menu (menu_id, restaurant_id, item_name, price)
+VALUES
+    -- Menu for restaurant_id 1
+    (201, 1, 'Matar Paneer', 220.00),
+    (202, 1, 'Chicken Curry', 270.00),
+    (203, 1, 'Jeera Rice', 100.00),
+    (204, 1, 'Tandoori Roti', 25.00),
+    
+    -- Menu for restaurant_id 2
+    (205, 2, 'Chilli Paneer', 170.00),
+    (206, 2, 'Schezwan Chicken', 200.00),
+    (207, 2, 'Hakka Noodles', 140.00),
+    (208, 2, 'Chicken Lollipop', 180.00),
+    
+    -- Menu for restaurant_id 3
+    (209, 3, 'Dahi Misal', 130.00),
+    (210, 3, 'Bhurji Pav', 90.00),
+    (211, 3, 'Kachori', 70.00),
+    (212, 3, 'Sabudana Khichdi', 110.00),
+    
+    -- Menu for restaurant_id 4
+    (213, 4, 'Pindi Chana', 130.00),
+    (214, 4, 'Jeera Rice', 100.00),
+    (215, 4, 'Aloo Gobi', 150.00),
+    (216, 4, 'Paneer Paratha', 120.00),
+    
+    -- Menu for restaurant_id 5
+    (217, 5, 'Farmhouse Pizza', 240.00),
+    (218, 5, 'Margarita Pizza', 220.00),
+    (219, 5, 'Chicken Supreme Pizza', 260.00),
+    (220, 5, 'Veg Extravaganza Pizza', 250.00),
+    
+    -- Menu for restaurant_id 6
+    (221, 6, 'Butter Chicken', 240.00),
+    (222, 6, 'Jeera Rice', 90.00),
+    (223, 6, 'Chicken Lollipop', 180.00),
+    (224, 6, 'Chole Bhature', 150.00),
+    
+    -- Menu for restaurant_id 7
+    (225, 7, 'Mysore Masala Dosa', 120.00),
+    (226, 7, 'Rava Idli', 100.00),
+    (227, 7, 'Paper Dosa', 130.00),
+    (228, 7, 'Uttapam', 110.00),
+    
+    -- Menu for restaurant_id 8
+    (229, 8, 'Chicken Noodles', 160.00),
+    (230, 8, 'Veg Hakka Noodles', 150.00),
+    (231, 8, 'Chilli Paneer', 180.00),
+    (232, 8, 'Gobi Manchurian', 140.00);
+
+
+# 1.To select the name and email of all users who have placed an order:
+SELECT Users.name, Users.email
+FROM Users
+JOIN Orders ON Users.user_id = Orders.user_id;
+
+
+# 2.To select the name and address of all restaurants that have received a rating of 4 or higher:
+SELECT Restaurants.name, Restaurants.address
+FROM Restaurants
+JOIN Rating ON Restaurants.restaurant_id = Rating.restaurant_id
+WHERE Rating.rating >= 4;
+
+# 3.To select the order id, total, and status of all orders that have been placed by a user with the email ‘rahul@example.com’:
+SELECT Order_id, Order_total, delivery_status
+FROM Orders
+JOIN Users ON Orders.user_id = Users.user_id
+WHERE Users.email = 'rahul@example.com';
+
+
+# 4.To select the name, phone, and rating of all drivers who have delivered an order:
+SELECT Drivers.email, Drivers.phone, Rating.rating
+FROM Drivers
+JOIN Orders ON Drivers.driver_id = Orders.driver_id
+JOIN Rating ON Orders.order_id = Rating.rating_id;
+
+# 5.To select the name, price and status of the payment of all menu items on a particular restaurant:
+SELECT Menu.item_name, Menu.price, Payment.status
+FROM Menu
+JOIN Orders ON Menu.restaurant_id = Orders.restaurant_id
+JOIN Payment ON Orders.order_id = Payment.order_id
+WHERE Menu.restaurant_id = 1;
+
+# 6.To select all the addresses of the user who placed a particular order:
+SELECT Address.street, Address.city, Address.state, Address.pincode
+FROM Address
+JOIN Orders ON Address.user_id = Orders.user_id
+WHERE Orders.order_id = 4;
+
+
+# multiple join and groupby & Having clause
+# 1. To select the average rating for each restaurant, along with the number of ratings they have received:
+SELECT Restaurants.name, AVG(Rating.rating) as avg_rating, COUNT(Rating.rating) as rating_count
+FROM Restaurants
+JOIN Rating ON Restaurants.restaurant_id = Rating.restaurant_id
+GROUP BY Restaurants.name;
+
+# Groupby clause
+# Get the total number of orders per restaurant with order total greater than 50:
+SELECT restaurant_id, COUNT(*) AS total_orders
+FROM Orders
+GROUP BY restaurant_id
+HAVING SUM(order_total) > 100;
+
+# Where Clause
+# Get orders with delivery status 'Delivered' and placed by user with ID 5:
+SELECT * FROM Orders
+WHERE delivery_status = 'Complete' AND user_id = 5;
+
+# Get drivers located in 'Vartak Nagar':
+SELECT * FROM Drivers
+WHERE location = 'Vartak Nagar, Thane';
+
+# Entries with GROUP BY Clause:
+
+# Get the average rating for each restaurant:
+SELECT restaurant_id, AVG(rating) AS average_rating
+FROM Rating
+GROUP BY restaurant_id;
+
+# Get the count of orders for each payment status:
+SELECT status, COUNT(*) AS order_count
+FROM Payment
+GROUP BY status;
+
+# Single Sub Query
+# Get the total number of orders for users who have placed more than 2 orders:
+SELECT COUNT(*) AS total_orders
+FROM Orders
+WHERE user_id IN (SELECT user_id
+FROM Orders
+GROUP BY user_id
+HAVING COUNT(*) > 2);
+
+# Get the names of users who have placed orders with a total greater than 150:
+SELECT name FROM Users
+WHERE user_id IN (
+    SELECT user_id
+    FROM Orders
+    WHERE order_total > 150
+);
+
+# Get the average rating of restaurants that have received ratings:
+SELECT AVG(rating) AS average_rating
+FROM Rating
+WHERE restaurant_id IN (
+    SELECT DISTINCT restaurant_id
+    FROM Rating);
+    
+# Get the names of users who have not placed any orders:
+SELECT name FROM Users
+WHERE user_id NOT IN (
+    SELECT DISTINCT user_id
+    FROM Orders
+);   
+
+# Double Subqueries:
+# Identify users who have ordered from restaurants that are serviced by drivers operating from 'Kolshet, Thane'.
+SELECT name FROM Users
+WHERE user_id IN (
+    SELECT user_id
+    FROM Orders
+    WHERE restaurant_id IN (
+        SELECT driver_id
+        FROM Drivers
+        WHERE location = 'Kolshet, Thane'));
+
+
+# Get the total number of orders placed at restaurants where the average rating is above 4:
+SELECT COUNT(*) AS total_orders
+FROM Orders
+WHERE restaurant_id IN (
+    SELECT restaurant_id
+    FROM Rating
+    GROUP BY restaurant_id
+    HAVING AVG(rating) > 4
+);
+
+
+# Get the names of users who have placed orders with a total greater than the average order total:
+SELECT name
+FROM Users
+WHERE user_id IN (
+    SELECT user_id
+    FROM Orders
+    WHERE order_total > (
+        SELECT AVG(order_total)
+        FROM Orders));
+        
+# Like Operator:
+# Get users whose email contains 'gmail':
+SELECT * FROM Users WHERE email LIKE '%example%'
+limit 5;        
+
+# Having Clause:
+# Get the total order amount for each user who has placed orders more than 200:
+SELECT user_id, SUM(order_total) AS total_amount
+FROM Orders
+GROUP BY user_id
+HAVING total_amount > 200;
+
+# Group By Clause:
+# Get the count of orders for each restaurant:
+SELECT restaurant_id, COUNT(*) AS order_count
+FROM Orders
+GROUP BY restaurant_id;
+
+# Where Clause:
+# Get the details of the driver with the name 'Rohit Sharma':
+SELECT * FROM Drivers WHERE name = 'Rohit Sharma';
+
+# Arithmetic Operators:
+# Get the total price of all menu items for a restaurant with ID 1:
+SELECT SUM(price) AS total_price FROM Menu WHERE restaurant_id = 1;
+
+# Comparison Operators:
+# Get users who have placed orders with a total greater than $50:
+SELECT DISTINCT user_id FROM Orders WHERE order_total > 50;
+
+# Logical Operators:
+# Get orders with a delivery status of 'Cancel' or 'on the way':
+SELECT * FROM Orders WHERE delivery_status = 'cancel' OR delivery_status = 'on the way';
+
+# Null Value:
+# Get users who do not have an associated address:
+SELECT * FROM Users WHERE user_id IN (SELECT DISTINCT user_id FROM Address)
+limit 5;
+
+# Limit Command:
+# Get the first 10 orders:
+SELECT * FROM Orders LIMIT 10;
+
+# Single Row Subqueries:
+# Get the email of the user who placed the highest order:
+SELECT email FROM Users WHERE user_id = (SELECT user_id FROM Orders ORDER BY order_total DESC LIMIT 1);
+
+# Multiple Row Subqueries:
+# Get users who have placed orders at restaurants in 'Thane':
+SELECT DISTINCT user_id FROM Orders WHERE restaurant_id IN (SELECT restaurant_id 
+FROM Restaurants WHERE address = '123, ABC Road, Thane');
+
+# Subquery with IN:
+# Get the names of restaurants where the average order total is greater than $50:
+SELECT name FROM Restaurants WHERE restaurant_id IN (SELECT restaurant_id 
+FROM Orders GROUP BY restaurant_id HAVING AVG(order_total) > 50);
+
+# Subquery with ALL:
+# Get users who have placed orders with a total greater than all orders placed by user with ID 1:
+SELECT DISTINCT user_id FROM Orders WHERE order_total > ALL (SELECT order_total 
+FROM Orders WHERE user_id = 1);
+
+# like Operator
+SELECT * FROM Users WHERE name LIKE 'A%';
+SELECT * FROM Users WHERE name LIKE '%A';
+SELECT * FROM Users WHERE name LIKE '_R%';
+SELECT * FROM Users WHERE name LIKE 'R_%';
